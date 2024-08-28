@@ -11,7 +11,9 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
         AWS_DEFAULT_REGION    = 'us-west-2'
     }
-
+   tools {
+        terraform 'Terraform'  // Use the Terraform tool configured in Jenkins
+    }
     stages {
         stage('Checkout') {
             steps {
