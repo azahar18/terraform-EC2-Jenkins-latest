@@ -11,9 +11,11 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
         AWS_DEFAULT_REGION    = 'us-west-2'
     }
-   tools {
+
+    tools {
         terraform 'latest'  // Use the Terraform tool configured in Jenkins
     }
+
     stages {
         stage('Checkout') {
             steps {
@@ -27,7 +29,7 @@ pipeline {
         }
         stage('Plan') {
             steps {
-                sh 'terraform plan -out tfplan'
+                sh 'terraform plan -out=tfplan'
                 sh 'terraform show -no-color tfplan > tfplan.txt'
             }
         }
@@ -40,16 +42,14 @@ pipeline {
                             input message: "Do you want to apply the plan?",
                             parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
                         }
-
-                        sh 'terraform ${action} -input=false tfplan'
+                        sh 'terraform apply -input=false tfplan'
                     } else if (params.action == 'destroy') {
-                        sh 'terraform ${action} --auto-approve'
+                        sh 'terraform destroy --auto-approve'
                     } else {
                         error "Invalid action selected. Please choose either 'apply' or 'destroy'."
                     }
                 }
             }
         }
-
     }
 }
