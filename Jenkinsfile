@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    parameters {
-        booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
-    }
-
     environment {
         AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
@@ -34,16 +30,7 @@ pipeline {
         }
         stage('Apply') {
             steps {
-                script {
-                    if (params.autoApprove) {
-                        sh 'terraform apply -input=false tfplan'
-                    } else {
-                        def plan = readFile 'tfplan.txt'
-                        input message: "Do you want to apply the plan?",
-                        parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
-                        sh 'terraform apply -input=false tfplan'
-                    }
-                }
+                sh 'terraform apply -input=false tfplan'
             }
         }
     }
