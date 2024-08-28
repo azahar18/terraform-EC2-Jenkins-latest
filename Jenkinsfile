@@ -15,7 +15,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/azahar18/terraform-EC2-Jenkins-latest'
+                git branch: 'master', url: 'https://github.com/azahar18/terraform-EC2-Jenkins-latest'
             }
         }
         stage('Terraform init') {
