@@ -12,7 +12,7 @@ pipeline {
         AWS_DEFAULT_REGION    = 'us-west-2'
     }
    tools {
-        terraform 'Terraform'  // Use the Terraform tool configured in Jenkins
+        terraform 'latest'  // Use the Terraform tool configured in Jenkins
     }
     stages {
         stage('Checkout') {
